@@ -1,0 +1,1 @@
+This project consists of scraping data about Heroes of Might & Magic 3 units, saving them in a database and conducting a simple analysis (description will be updated). 
