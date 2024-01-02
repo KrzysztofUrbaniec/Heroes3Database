@@ -61,11 +61,52 @@ def get_creature_data(creature_soup: BeautifulSoup) -> list:
 
     return creatures
 
-def get_hero_data():
-    pass
+def get_hero_data(hero_soup: BeautifulSoup) -> list:
+    '''Extract information about different heroes from Heroes 3. 
+    
+    Args:
+        creature_soup: BeautifulSoup object containing scraped html page with heroes table.
 
-def get_spell_data():
-    pass
+    Returns:
+        Data prepared for an insertion into MySQL database in format: [dict(values),dict(values),...] '''
 
-def get_artifact_data():
-    pass
+    heroes = []
+    table = hero_soup.find_all('tr')[2:]
+    for row in table:
+        hero_properties = dict()
+        hero = row.find_all('td')
+        hero_properties['hero_name'] = hero[0].text.strip()
+        hero_properties['class'] = hero[1].text.strip()
+        hero_properties['specialty'] = hero[3].text.strip()
+        hero_properties['skill1'] = hero[5].text.strip()
+        hero_properties['skill2'] = hero[7].text.strip()
+        hero_properties['spell'] = hero[9].text.strip()
+
+        heroes.append(hero_properties)
+
+    return heroes
+
+def get_artifact_data(artifact_soup: BeautifulSoup) -> list:
+    '''Extract information about different artifacts from Heroes 3. 
+    
+    Args:
+        creature_soup: BeautifulSoup object containing scraped html page with artifacts table.
+
+    Returns:
+        Data prepared for an insertion into MySQL database in format: [dict(values),dict(values),...] '''
+
+    artifacts = []
+    table = artifact_soup.find_all('tr')[2:]
+    for row in table:
+        artifact_properties = dict()
+        artifact = row.find_all('td')
+        artifact_properties['artifact_name'] = artifact[0].text.strip()
+        artifact_properties['slot'] = artifact[1].text.strip()
+        artifact_properties['class'] = artifact[2].text.strip()
+        artifact_properties['cost'] = artifact[3].text.strip()
+        artifact_properties['effect'] = artifact[4].text.strip()
+        artifact_properties['combination'] = artifact[5].text.strip()
+
+        artifact.append(artifact_properties)
+
+    return artifacts
