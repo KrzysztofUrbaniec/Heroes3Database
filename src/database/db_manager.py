@@ -28,7 +28,7 @@ def create_mysql_connection(func):
     return wrapper
 
 @create_mysql_connection
-def create_table(connection: mysql.connector.connection_cext.CMySQLConnection, table_query: 'str') -> None:
+def create_table(connection: mysql.connector.connection_cext.CMySQLConnection, table_query: str) -> None:
     '''Create table in an existing database.
     
     Args:

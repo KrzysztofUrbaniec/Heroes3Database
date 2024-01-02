@@ -71,7 +71,7 @@ def get_hero_data(hero_soup: BeautifulSoup) -> list:
         Data prepared for an insertion into MySQL database in format: [dict(values),dict(values),...] '''
 
     heroes = []
-    table = hero_soup.find_all('tr')[2:]
+    table = hero_soup.find_all('tr')[1:]
     for row in table:
         hero_properties = dict()
         hero = row.find_all('td')
@@ -96,7 +96,7 @@ def get_artifact_data(artifact_soup: BeautifulSoup) -> list:
         Data prepared for an insertion into MySQL database in format: [dict(values),dict(values),...] '''
 
     artifacts = []
-    table = artifact_soup.find_all('tr')[2:]
+    table = artifact_soup.find_all('tr')[1:]
     for row in table:
         artifact_properties = dict()
         artifact = row.find_all('td')
@@ -107,6 +107,6 @@ def get_artifact_data(artifact_soup: BeautifulSoup) -> list:
         artifact_properties['effect'] = artifact[4].text.strip()
         artifact_properties['combination'] = artifact[5].text.strip()
 
-        artifact.append(artifact_properties)
+        artifacts.append(artifact_properties)
 
     return artifacts
