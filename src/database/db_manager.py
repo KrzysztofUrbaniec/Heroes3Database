@@ -52,9 +52,30 @@ def insert_into_table(connection: mysql.connector.connection_cext.CMySQLConnecti
         data: a list of dictionaries containing data to insert into the table.
     '''
     with connection.cursor() as cursor:
-        columns_list = ', '.join(data[0].keys())
-        values_list = ', '.join(list(map(lambda x: '%(' + str(x) + ')s',data[0].keys())))
-
-        insert_query = f"INSERT INTO {table_name} ({columns_list}) VALUES ({values_list})"
+        insert_query = generate_insert_query(data,table_name)        
         cursor.executemany(insert_query, data)
         connection.commit()
+
+def generate_insert_query(data: list, table_name: str) -> str:
+    '''Dynamically generate an insertion query using "data" dictionary.'''
+
+    if not isinstance(data,list):
+        raise TypeError('data must be a list')
+    if not isinstance(table_name, str):
+        raise TypeError('table_name must be a string')
+    if len(data) == 0:
+        raise ValueError('data cannot be an empty container')
+    if all(list(map(lambda x: isinstance(x,dict),data))) is not True:
+        raise ValueError('some of the elements of data are not dictionaries')
+    if len(set(map(lambda x: len(x.keys()), data))) > 1:
+        raise ValueError('some of the dictionaries inside data have various number of keys')
+        
+    first_keys = set(data[0].keys())
+    key_comparison = all(set(d.keys()) == first_keys for d in data[1:])
+    if key_comparison is not True:
+        raise ValueError('some dictionaries inside data have various key names')
+
+    columns_list = ', '.join(data[0].keys())
+    values_list = ', '.join(list(map(lambda x: '%(' + str(x) + ')s',data[0].keys())))
+    insert_query = f"INSERT INTO {table_name} ({columns_list}) VALUES ({values_list})"
+    return insert_query
