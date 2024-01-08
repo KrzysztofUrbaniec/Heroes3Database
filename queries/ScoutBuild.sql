@@ -79,7 +79,7 @@ CREATE VIEW heroes_with_scouting_skills_view AS
 Finally, are there any artifacts, that could increase the speed even more?
 */
 
-CREATE VIEW artifacts_increasing_view AS
+CREATE VIEW artifacts_increasing_movement_view AS
 	SELECT
 		*
 	FROM Heroes3DB.artifacts
