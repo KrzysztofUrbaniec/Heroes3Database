@@ -65,9 +65,9 @@ def generate_insert_query(data: list, table_name: str) -> str:
         raise TypeError('table_name must be a string')
     if len(data) == 0:
         raise ValueError('data cannot be an empty container')
-    if all(list(map(lambda x: isinstance(x,dict),data))) is not True:
+    if all([isinstance(x,dict) for x in data]) is not True:
         raise ValueError('some of the elements of data are not dictionaries')
-    if len(set(map(lambda x: len(x.keys()), data))) > 1:
+    if len({len(x.keys()) for x in data}) > 1:
         raise ValueError('some of the dictionaries inside data have various number of keys')
         
     first_keys = set(data[0].keys())
